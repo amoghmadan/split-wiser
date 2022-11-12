@@ -2,7 +2,11 @@
 name = "split-wiser"
 version = "0.1.0"
 description = "Manage your shared expenses with this application."
-authors = ["Amogh Madan <amogh.madan@acsicorp.com>"]
+authors = [
+    "Amogh Madan <amoghmadaan@gmail.com>",
+    "Ashutosh Raj Baranwal <ashutoshrajb@gmail.com>",
+    "Jai Narayan Jain <jainaryanjain2604@gmail.com>",
+]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "split_wiser"}]
