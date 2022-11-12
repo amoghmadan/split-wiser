@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  api:
+    build: .
+    command: gunicorn wsgi:application --chdir=/split-wiser/src -b=0.0.0.0:8000 -w=4 -t=10
+    container_name: "Split-Wiser-Backend"
+    environment:
+      SPLIT_WISER: ${SPLIT_WISER:-development}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: split-wiser:backend
+    ports:
+      - "38383:8000"
+    restart: always
+    volumes:
+      - .:/split-wiser
