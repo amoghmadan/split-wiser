@@ -1,5 +1,5 @@
 from utilities.database import db
-from utilities.serializers import ma
+from utilities.schemas import ma
 from utilities.migrate import migrate
 
 __all__ = [
