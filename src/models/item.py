@@ -11,6 +11,7 @@ class User(db.Model):
     phone = db.Column(db.BigInteger)
 
 
+
 class Group(db.Model):
     """Group Model"""
     id = db.Column(db.Integer)
