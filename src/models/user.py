@@ -11,7 +11,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column("firstName", db.String)
     last_name = db.Column("lastName", db.String)
-    email = db.Column(db.String)
+    email = db.Column(db.String, index=True, unique=True)
     password = db.Column(db.String)
     phone = db.Column(db.BigInteger)
     created_at = db.Column("createdAt", db.DateTime, default=func.now())

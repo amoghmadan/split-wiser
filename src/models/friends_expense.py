@@ -7,6 +7,8 @@ from utilities import db
 class FriendsExpense(db.Model):
     """Friends Expense Model"""
 
+    __tablename__ = "friendsExpense"
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     group_friend_id = db.Column(
         "groupFriendId", db.Integer, db.ForeignKey(GroupFriend.id)
