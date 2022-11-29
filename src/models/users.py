@@ -1,3 +1,5 @@
+from hashlib import sha1
+
 from sqlalchemy.sql import func
 
 from utilities import db
@@ -17,3 +19,10 @@ class User(db.Model):
     created_at = db.Column("createdAt", db.DateTime, default=func.now())
     updated_at = db.Column("updatedAt", db.DateTime, onupdate=func.utc_timestamp())
     token = db.relationship("Token", back_populates="user")
+
+    @staticmethod
+    def encrypt_password(password):
+        return sha1(password.encode(), usedforsecurity=False).hexdigest()
+
+    def check_password(self, password):
+        return self.password == self.encrypt_password(password)
