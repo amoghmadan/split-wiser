@@ -1,92 +1,37 @@
 from http import HTTPStatus
-from flask import views, request
+
+from flask import jsonify, request, views
 from marshmallow.validate import ValidationError
 
-from utilities import db
-from models import User
-from schemas import UserSchema
+from models import Token, User
+from schemas import LoginSchema, UserSchema
+from utilities import db, viewsets
 
 
-class UserViewSet(views.MethodView):
+class RegisterUserView(viewsets.ModelViewSet):
+    """User: View Set"""
+
     model = User
     schema_class = UserSchema
-    lookup_field = "id"
-    lookup_url_kwarg = "id"
 
-    def post(self, *arg, **kwargs):
-        """Post : It will post data"""
 
-        schema = self.schema_class()
+class LoginUserView(views.MethodView):
+    schema_class = LoginSchema
+
+    def post(self):
         try:
-            instance = schema.load(request.json)
+            payload = self.schema_class(request.json)
         except ValidationError as e:
-            return e.messages, HTTPStatus.BAD_REQUEST
-        db.session.add(instance)
-        db.session.commit()
-        return schema.dump(instance), HTTPStatus.OK
-
-    def get_object(self, *args, **kwargs):
-        """Get Obejct : it will fetch the details of a specific user"""
-
-        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
-        filter_kwargs = {self.lookup_field: kwargs[lookup_url_kwarg]}
-        obj = self.model.query.filter_by(**filter_kwargs).first()
-        return obj
-
-    def get(self, *args, **kwargs):
-        """GET : It will retrieve specific as well as all records of database"""
-
-        if self.lookup_url_kwarg not in kwargs:
-            instance = self.model.query.all()
-            schema = self.schema_class(many=True)
-            return schema.dump(instance), HTTPStatus.OK
-
-        instance = self.get_object(*args, **kwargs)
-        schema = self.schema_class()
-        if not instance:
-            return {"message": "Details not found"}, HTTPStatus.NOT_FOUND
-        return schema.dump(instance), HTTPStatus.OK
-
-    def delete(self, *args, **kwargs):
-        """Delete: It will delete the specific user"""
-
-        instance = self.get_object(*args, **kwargs)
-        if not instance:
-            return {"message": "Record Not found"}, HTTPStatus.NOT_FOUND
-        schema = self.schema_class()
-        db.session.delete(instance)
-        db.session.commit()
-
-        return {"message": "Record is deleted"}
-
-    def put(self, *args, **kwargs):
-        """ Put : It will change the full details of a specific id """
-
-        instance = self.get_object(*args, **kwargs)
-        if not instance:
-            return {"message": "Record Not found"}, HTTPStatus.NOT_FOUND
-        schema = self.schema_class()
-        try:
-            instance = schema.load(request.json, instance=instance)
-        except ValidationError as e:
-            return e.messages, HTTPStatus.BAD_REQUEST
-        db.session.add(instance)
-        db.session.commit()
-
-        return schema.dump(instance), HTTPStatus.OK
-
-    def patch(self, *args, **kwargs):
-        """Patch: It  will change some fields of the model"""
-
-        instance = self.get_object(*args, **kwargs)
-        if not instance:
-            return {"message": "Record Not found"}, HTTPStatus.NOT_FOUND
-        schema = self.schema_class()
-        try:
-            instance = schema.load(request.json, instance=instance, partial=True)
-        except ValidationError as e:
-            return e.messages, HTTPStatus.BAD_REQUEST
-        db.session.add(instance)
-        db.session.commit()
-
-        return schema.dump(instance), HTTPStatus.OK
+            return jsonify(e.messages), HTTPStatus.BAD_REQUEST
+        user = User.query.filter_by(email=payload["email"]).first()
+        if not user:
+            pass
+        if not user.check_password(payload["password"]):
+            pass
+        token = Token.query.filter_by(user_id=user.id).first()
+        if not token:
+            token = Token(user_id=user.id)
+            db.session.add(token)
+            db.session.commit()
+            db.reflect(token)
+        return jsonify({"token": token.key}), HTTPStatus.CREATED
