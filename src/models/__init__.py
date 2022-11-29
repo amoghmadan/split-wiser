@@ -1,13 +1,13 @@
-from models.friend import Friend
-from models.friends_expense import FriendsExpense
-from models.group import Group
-from models.group_friend import GroupFriend
-from models.token import Token
-from models.user import User
+from models.friends import Friend
+from models.expense import Expense
+from models.groups import Group
+from models.group_friends import GroupFriend
+from models.tokens import Token
+from models.users import User
 
 __all__ = [
     "Friend",
-    "FriendsExpense",
+    "Expense",
     "Group",
     "GroupFriend",
     "Token",
