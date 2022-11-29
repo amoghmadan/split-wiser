@@ -1,15 +1,20 @@
 from flask import Blueprint
 
-from routes.api.v1.friend import friend
+from routes.api.v1.expense import expense
+from routes.api.v1.friends import friends
+from routes.api.v1.groups import groups
+from routes.api.v1.group_friends import group_friends
+from routes.api.v1.tokens import tokens
 from routes.api.v1.users import users
-from routes.api.v1.group import group
-from routes.api.v1.token import token
 
 routes = [
-    ("/friends", friend),
+    ("/expenses", expense),
+    ("/friends", friends),
+    ("/groups", groups),
+    ("/group-friends", group_friends),
+    ("/login", tokens),
     ("/users", users),
-    ("/groups", group),
-    ("/token", token)
+
 ]
 
 v1 = Blueprint("v1", __name__)
