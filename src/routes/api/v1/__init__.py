@@ -1,6 +1,14 @@
 from flask import Blueprint
 
-routes = []
+from routes.api.v1.friend import friend
+from routes.api.v1.user import user
+from routes.api.v1.group import group
+
+routes = [
+    ("/friends", friend),
+    ("/users", user),
+    ("/groups", group)
+]
 
 v1 = Blueprint("v1", __name__)
 for prefix, route in routes:
