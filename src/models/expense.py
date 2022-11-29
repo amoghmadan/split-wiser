@@ -1,13 +1,13 @@
 from sqlalchemy.sql import func
 
-from models.group_friend import GroupFriend
+from models.group_friends import GroupFriend
 from utilities import db
 
 
-class FriendsExpense(db.Model):
+class Expense(db.Model):
     """Friends Expense Model"""
 
-    __tablename__ = "friendsExpense"
+    __tablename__ = "expense"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     group_friend_id = db.Column(
