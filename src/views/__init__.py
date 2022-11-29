@@ -1,10 +1,15 @@
+from views.expense import ExpenseViewSet
 from views.friends import FriendViewSet
-from views.users import UserViewSet
 from views.groups import GroupViewSet
-from views.token import TokenViewSet
+from views.group_friends import GroupFriendViewSet
+from views.users import RegisterUserView
+from views.tokens import TokenViewSet
 
 __all__ = [
+    "ExpenseViewSet",
     "FriendViewSet",
-    "UserViewSet",
     "GroupViewSet",
+    "GroupFriendViewSet",
+    "RegisterUserView",
+    "TokenViewSet",
 ]
