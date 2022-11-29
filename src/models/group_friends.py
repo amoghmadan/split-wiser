@@ -1,7 +1,7 @@
 from sqlalchemy.sql import func
 
-from models.friend import Friend
-from models.group import Group
+from models.friends import Friend
+from models.groups import Group
 from utilities import db
 
 

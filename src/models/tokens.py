@@ -3,7 +3,7 @@ import os
 
 from sqlalchemy.sql import func
 
-from models.user import User
+from models.users import User
 from utilities import db
 
 
@@ -17,6 +17,6 @@ class Token(db.Model):
     __tablename__ = "token"
 
     key = db.Column(db.String, default=generate_key, primary_key=True)
-    user_id = db.Column("userId", db.Integer, db.ForeignKey(User.id))
+    user_id = db.Column("userId", db.Integer, db.ForeignKey(User.id), unique=True)
     created_at = db.Column("createdAt", db.DateTime, default=func.now())
     user = db.relationship("User", back_populates="token")
